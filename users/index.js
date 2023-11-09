@@ -17,7 +17,7 @@ app.post('/events', (req, res) => {
 })
 
 app.post('/authenticateUser', (req, res) => {
-    const data = req.body;
+    const {data} = req.body;
 
     const userName = data.username;
     const password = data.password;

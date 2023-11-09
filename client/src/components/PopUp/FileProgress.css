@@ -1,0 +1,45 @@
+.popup {
+    position: sticky;
+    top:0; left: 0; width: 100%; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: whitesmoke;
+}
+
+.popup-inner {
+    position: relative;
+    padding: 32px;
+    width: 100%;
+    max-width: 640px;
+    background-color: #202123;
+}
+
+.popup-inner .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.close-btn:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(1.5);
+}
+
+.document-name-container{
+    position: relative;
+    overflow: scroll;
+}
+
+.document-name {
+    text-align: left;
+    font-size: small;
+}
+
+.progress-bar {
+    padding-bottom: 5%;
+    color: whitesmoke;
+
+}
