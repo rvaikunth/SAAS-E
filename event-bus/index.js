@@ -11,15 +11,15 @@ app.post('/events', (req, res) => {
     const event = req.body;
     console.log('in event bus')
     //previouschats
-    axios.post('http://localhost:4001/events', event).catch((err) => {
+    axios.post('http://previouschats:4001/events', event).catch((err) => {
         console.log(err.message);
     });
     //users
-    axios.post('http://localhost:4002/events', event).catch((err) => {
+    axios.post('http://users:4002/events', event).catch((err) => {
         console.log(err.message);
     });
     //documentUpload
-    axios.post('http://localhost:4004/events', event).catch((err) => {
+    axios.post('http://documentUpload:4004/events', event).catch((err) => {
         console.log(err.message);
     });
 
