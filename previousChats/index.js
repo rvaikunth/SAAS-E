@@ -143,6 +143,6 @@ app.post('/test', async (req, res) => {
     res.status(200).send();
 })
 
-app.listen(4001, () => {
+app.listen(process.env.PORT || 4001, () => {
     console.log('Listening on 4001');
   });

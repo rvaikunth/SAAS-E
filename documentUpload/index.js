@@ -128,6 +128,6 @@ app.put('/docNames', async (req, res) => {
 });
 
 //10:30
-app.listen(4004, () => {
+app.listen((process.env.PORT || 4004), () => {
     console.log('Listening on 4004');
   });

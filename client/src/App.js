@@ -1,5 +1,7 @@
 import './App.css';
 import './normal.css'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import Dashboard from './components/Dashboard/Dashboard.js';
 import Login from './components/Login/Login';
 import Register from './components/Login/Register'

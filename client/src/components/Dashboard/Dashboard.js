@@ -1,4 +1,6 @@
 import './normal.css'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import {useState, useEffect, useRef} from 'react'
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
@@ -25,7 +27,7 @@ export default function Dashboard({userName}) {
   const [fileNames, setFileNames] = useState([])
 
   async function getFileNames() {
-    await axios.put('http://localhost:4004/docNames', {
+    await axios.put(process.env.REACT_APP_API_DU_ADDRESS + '/docNames', {
       userName
     }).then(async(response) => {
       setFileNames(response.data)
@@ -33,7 +35,7 @@ export default function Dashboard({userName}) {
   }
 
   async function getFirstMessages(){
-    const response = await axios.put('http://localhost:4001/chatLogs', {
+    const response = await axios.put(process.env.REACT_APP_API_PC_ADDRESS + '/chatLogs', {
       userName
     });
     const allChatlogs = response.data;
@@ -66,7 +68,7 @@ export default function Dashboard({userName}) {
     e.preventDefault()
     if(chatlog.length > 1){
 
-      await axios.post('http://localhost:4000/events', {
+      await axios.post(process.env.REACT_APP_API_EB_ADDRESS + '/events', {
         type: 'newChatLog',
         data: {
           userName: userName,
@@ -86,12 +88,19 @@ export default function Dashboard({userName}) {
     e.preventDefault()
 
     let newChatLog = [...chatlog, { user: "me", message: `${input}`}]
-    setInput('')
-    const response = await axios.post('http://localhost:4000/response', {
-      message: input
-    });
-    newChatLog = [...newChatLog, {user: "ai", message: `${response.data}`}]
     setChatLog([...newChatLog])
+    setInput('')
+    console.log("send message to endpoint")
+    //process.env.REACT_APP_API_EB_ADDRESS + '/response'
+    const response = await axios.post("http://104.155.188.137:8000/generate_text", {
+      "input_text": input
+    });
+    console.log("recieved message!")
+    console.log(response.data.generated_text)
+
+    newChatLog = [...newChatLog, {user: "ai", message: `${response.data.generated_text}`}]
+    setChatLog([...newChatLog])
+    chatlogs[newChatLog[1].message] = newChatLog
   }
 
   const PrevoiusChats = ({previousChat}) => {
@@ -157,7 +166,7 @@ export default function Dashboard({userName}) {
       }
 
       try{
-        await fetch('http://localhost:4004/uploadCloud', {
+        await fetch(process.env.REACT_APP_API_DU_ADDRESS + '/uploadCloud', {
           method: 'POST',
           body: formData
         });
@@ -166,7 +175,7 @@ export default function Dashboard({userName}) {
         console.log(error)
       }
 
-      await axios.post('http://localhost:4000/events', {
+      await axios.post(process.env.REACT_APP_API_EB_ADDRESS + '/events', {
         type: 'newDocUpload',
         data: {
           userName: userName,

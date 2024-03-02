@@ -1,0 +1,7 @@
+runtime: nodejs18
+service: server2
+env_variables: 
+  REACT_APP_API_USERS_ADDRESS: "https://server4-dot-ardent-stacker-400902.uc.r.appspot.com"
+  REACT_APP_API_EB_ADDRESS: "https://server2-dot-ardent-stacker-400902.uc.r.appspot.com"
+  REACT_APP_API_PC_ADDRESS: "https://server3-dot-ardent-stacker-400902.uc.r.appspot.com"
+  REACT_APP_API_DU_ADDRESS: "https://server1-dot-ardent-stacker-400902.uc.r.appspot.com"

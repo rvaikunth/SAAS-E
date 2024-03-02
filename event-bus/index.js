@@ -11,15 +11,15 @@ app.post('/events', (req, res) => {
     const event = req.body;
     console.log('in event bus')
     //previouschats
-    axios.post('http://previouschats:4001/events', event).catch((err) => {
+    axios.post(process.env.REACT_APP_API_PC_ADDRESS + '/events', event).catch((err) => {
         console.log(err.message);
     });
     //users
-    axios.post('http://users:4002/events', event).catch((err) => {
+    axios.post(process.env.REACT_APP_API_USERS_ADDRESS + '/events', event).catch((err) => {
         console.log(err.message);
     });
     //documentUpload
-    axios.post('http://documentUpload:4004/events', event).catch((err) => {
+    axios.post(process.env.REACT_APP_API_DU_ADDRESS + '/events', event).catch((err) => {
         console.log(err.message);
     });
 
@@ -27,12 +27,15 @@ app.post('/events', (req, res) => {
     res.send("OK");
 });
 
-app.post('/response', (req, res) => {
-    console.log(req.body.message)
-    res.status(200).send('Hello, I am an AI')
+app.post('/response', async (req, res) => {
+    const response = await axios.post("http://104.155.188.137:8000/generate_text", {
+      "input_text": req.body.input_text
+    });
+    console.log(response.data.generated_text)
+    res.status(200).send(response.data.generated_text)
 });
 
-app.listen(4000, () => {
+app.listen(process.env.PORT || 4000, () => {
     console.log('Listening on 4000');
   });
   

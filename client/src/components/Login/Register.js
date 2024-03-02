@@ -1,8 +1,6 @@
 import React from 'react';
 import './Login.css'
-import PropTypes from 'prop-types';
 import {useState} from 'react'
-import axios from 'axios';
 
 
 export default function Register({onFormSwitch}) {
