@@ -12,15 +12,6 @@ app.use(express.json());
 app.use(cors());
 
 let fsc = new FirestoreClient();
-// const burgerHut = {
-//     docName: 'burgerhut',
-//     location: 'LA'
-// }
-
-// const save = async() => {
-//     await fsc.save('restraunts', burgerHut)
-// }
-// save();
 
 const prevChatsFile = 'prevChats.json'
 // // Google storage

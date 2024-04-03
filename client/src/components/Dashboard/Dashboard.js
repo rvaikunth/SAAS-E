@@ -1,6 +1,5 @@
 import './normal.css'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import {useState, useEffect, useRef} from 'react'
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
@@ -92,13 +91,16 @@ export default function Dashboard({userName}) {
     setInput('')
     console.log("send message to endpoint")
     //process.env.REACT_APP_API_EB_ADDRESS + '/response'
-    const response = await axios.post("http://104.155.188.137:8000/generate_text", {
+    const response = await axios.post("https://singular-silkworm-destined.ngrok-free.app/generate_text", {
       "input_text": input
     });
-    console.log("recieved message!")
-    console.log(response.data.generated_text)
+    // console.log("recieved message!")
+    // console.log(response.data.generated_text)
+    // console.log(response.data.generated_text.split('\n\n'))
+    const llmAnswer = response.data.generated_text.split('\n\n')
+    const chatResponse = (llmAnswer[0] === input)? llmAnswer.splice(1) : response.data.generated_text
 
-    newChatLog = [...newChatLog, {user: "ai", message: `${response.data.generated_text}`}]
+    newChatLog = [...newChatLog, {user: "ai", message: `${chatResponse}`}]
     setChatLog([...newChatLog])
     chatlogs[newChatLog[1].message] = newChatLog
   }

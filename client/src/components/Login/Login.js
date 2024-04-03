@@ -13,7 +13,7 @@ export default function Login({ setToken, onFormSwitch }) {
     async function loginAttempt(e){
         e.preventDefault();
         console.log(username, password)
-        await axios.post('https://server4.ardent-stacker-400902.uc.r.appspot.com/authenticateUser', {
+        await axios.post(process.env.REACT_APP_API_USERS_ADDRESS + '/authenticateUser', {
             type: 'Login',
             data: {
               username,
@@ -27,6 +27,7 @@ export default function Login({ setToken, onFormSwitch }) {
             alert('Wrong username/password')
         })
     } 
+
     return(
     <div className='Login'>
         <div className="auth-form-container">

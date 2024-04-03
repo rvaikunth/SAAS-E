@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
+import FirestoreClient from './firesStoreClient.js';
 
 const app = express();
 
@@ -24,16 +25,26 @@ app.post('/events', (req, res) => {
 
 })
 
-app.post('/authenticateUser', (req, res) => {
+let fsc = new FirestoreClient();
+
+app.post('/authenticateUser', async (req, res) => {
     const {type, data} = req.body;
 
     const userName = data.username;
     const password = data.password;
-    console.log(userName)
-    console.log(password)
+    const collection = await fsc.getCollection(userName);
+    let rPassword;
+    collection.forEach(doc => {
+            // console.log(doc.id, '=>', doc.data().password); 
+            rPassword = doc.data().password;         
+          });
+    // console.log(userName)
+    // console.log("password")
+    // console.log(rPassword)
     
-    if(credentials[userName] && credentials[userName] === password){
+    if(rPassword === password){
         res.status(200).send({
+            //can add more here to give an actual token/username
             token: userName
         });
     }

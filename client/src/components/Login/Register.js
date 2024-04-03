@@ -22,4 +22,5 @@ export default function Register({onFormSwitch}) {
         </div>
     </div>
     )
+
 }
