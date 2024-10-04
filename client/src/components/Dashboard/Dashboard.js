@@ -26,22 +26,22 @@ export default function Dashboard({userName}) {
   const [fileNames, setFileNames] = useState([])
 
   async function getFileNames() {
-    await axios.put(process.env.REACT_APP_API_DU_ADDRESS + '/docNames', {
-      userName
-    }).then(async(response) => {
-      setFileNames(response.data)
-    })
+    // await axios.put(process.env.REACT_APP_API_DU_ADDRESS + '/docNames', {
+    //   userName
+    // }).then(async(response) => {
+    //   setFileNames(response.data)
+    // })
   }
 
   async function getFirstMessages(){
-    const response = await axios.put(process.env.REACT_APP_API_PC_ADDRESS + '/chatLogs', {
-      userName
-    });
-    const allChatlogs = response.data;
+    // const response = await axios.put(process.env.REACT_APP_API_PC_ADDRESS + '/chatLogs', {
+    //   userName
+    // });
+    // const allChatlogs = response.data;
     
-    const arrayOfFirstMessages = (allChatlogs)? Object.keys(allChatlogs) : []
-    setfirstMessages(arrayOfFirstMessages)
-    setChatLogs(allChatlogs)
+    // const arrayOfFirstMessages = (allChatlogs)? Object.keys(allChatlogs) : []
+    // setfirstMessages(arrayOfFirstMessages)
+    // setChatLogs(allChatlogs)
   }
 
   async function prevChatClick(chatName) {
@@ -67,14 +67,14 @@ export default function Dashboard({userName}) {
     e.preventDefault()
     if(chatlog.length > 1){
 
-      await axios.post(process.env.REACT_APP_API_EB_ADDRESS + '/events', {
-        type: 'newChatLog',
-        data: {
-          userName: userName,
-          firstQuestion: chatlog[1].message,
-          chatLog: JSON.stringify(chatlog)
-        }
-      })
+      // await axios.post(process.env.REACT_APP_API_EB_ADDRESS + '/events', {
+      //   type: 'newChatLog',
+      //   data: {
+      //     userName: userName,
+      //     firstQuestion: chatlog[1].message,
+      //     chatLog: JSON.stringify(chatlog)
+      //   }
+      // })
     }
     setChatLog([{
       user: "ai",
@@ -90,17 +90,24 @@ export default function Dashboard({userName}) {
     setChatLog([...newChatLog])
     setInput('')
     console.log("send message to endpoint")
+    const payLoadBody = {
+      "input_text": input
+    };
     //process.env.REACT_APP_API_EB_ADDRESS + '/response'
     const response = await axios.post("https://singular-silkworm-destined.ngrok-free.app/generate_text", {
-      "input_text": input
+      payLoadBody
+    }).catch((error) => {
+      return undefined;
     });
+    // console.log(response)
     // console.log("recieved message!")
     // console.log(response.data.generated_text)
     // console.log(response.data.generated_text.split('\n\n'))
-    const llmAnswer = response.data.generated_text.split('\n\n')
-    const chatResponse = (llmAnswer[0] === input)? llmAnswer.splice(1) : response.data.generated_text
+    const llmAnswer = (response)? response.data.generated_text.split('\n\n'): "LLM is not availble right now!";
+    // const chatResponse = (llmAnswer[0] === input)? llmAnswer.splice(1) : response.data.generated_text
+    // const chatResponse = (llmAnswer)? llmAnswer : ""
 
-    newChatLog = [...newChatLog, {user: "ai", message: `${chatResponse}`}]
+    newChatLog = [...newChatLog, {user: "ai", message: `${llmAnswer}`}]
     setChatLog([...newChatLog])
     chatlogs[newChatLog[1].message] = newChatLog
   }
@@ -167,25 +174,25 @@ export default function Dashboard({userName}) {
         fileNames.push(files[i].name)
       }
 
-      try{
-        await fetch(process.env.REACT_APP_API_DU_ADDRESS + '/uploadCloud', {
-          method: 'POST',
-          body: formData
-        });
-        alert('File(s) Uploaded')
-      } catch(error) {
-        console.log(error)
-      }
+      // try{
+      //   await fetch(process.env.REACT_APP_API_DU_ADDRESS + '/uploadCloud', {
+      //     method: 'POST',
+      //     body: formData
+      //   });
+      //   alert('File(s) Uploaded')
+      // } catch(error) {
+      //   console.log(error)
+      // }
 
-      await axios.post(process.env.REACT_APP_API_EB_ADDRESS + '/events', {
-        type: 'newDocUpload',
-        data: {
-          userName: userName,
-          fileNames
-        }
-      }).then(async (e) => {
-        await getFileNames()
-      })
+      // await axios.post(process.env.REACT_APP_API_EB_ADDRESS + '/events', {
+      //   type: 'newDocUpload',
+      //   data: {
+      //     userName: userName,
+      //     fileNames
+      //   }
+      // }).then(async (e) => {
+      //   await getFileNames()
+      // })
     }
   }
 
